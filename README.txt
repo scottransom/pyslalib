@@ -1,5 +1,5 @@
-pySLALIB v1.0  (Nov 2007)
--------------
+pySLALIB v1.0.1  (Sep 2010)
+---------------
 
 This is archive contains new f2py-generated (and hand-tweaked to
 eliminate unnecessary function/subroutine arguments) wrappers for the
