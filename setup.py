@@ -1,8 +1,16 @@
 #!/usr/bin/env python
 import glob
 from numpy.distutils.core import setup, Extension
+import pickle
+import get_docstring
 
-ext1 = Extension(name = 'slalib',
+# Generate documentation dictionary and save it in "lib/"
+docstring = get_docstring.get_docstring()
+f = open("lib/docstring_pickle.pkl", "w")
+pickle.dump(docstring, f)
+f.close()
+
+ext1 = Extension(name = 'pyslalib.slalib',
                  include_dirs = ['.'],
                  sources = ['slalib.pyf']+\
                            glob.glob("*.f")+\
@@ -11,8 +19,11 @@ ext1 = Extension(name = 'slalib',
 if __name__ == "__main__":
     setup(name = 'pySLALIB',
           description       = "f2py and numpy based wrappers for SLALIB",
-          version           = "1.0.1",
+          version           = "1.0.2dev",
           author            = "Scott Ransom",
           author_email      = "sransom@nrao.edu",
+          packages = ['pyslalib'],
+          package_dir = {'pyslalib': 'lib'},
+          package_data = {'pyslalib': ['docstring_pickle.pkl']},
           ext_modules = [ext1]
           )
