@@ -1,4 +1,4 @@
-pySLALIB v1.0.1  (Sep 2010)
+pySLALIB v1.0.2  (Dec 2010)
 ---------------
 
 This is archive contains new f2py-generated (and hand-tweaked to
@@ -27,30 +27,53 @@ unittests via:
 
 Example Usage (using IPython)
 -------------
-In [1]: import slalib as S
+In [1]: from pyslalib import slalib
 
-In [2]: S.sla_veri()
+In [2]: slalib.sla_veri()
 Out[2]: 2005004
 
-In [3]: S.sla_caldj(1999, 12, 31)
+In [3]: slalib.sla_caldj(1999, 12, 31)
 Out[3]: (51543.0, 0)
 
-In [4]: S.sla_etrms(1976.9)
+In [4]: slalib.sla_etrms(1976.9)
 Out[4]: array([ -1.62161710e-06,  -3.31007009e-07,  -1.43529663e-07])
 
-In [5]: S.sla_fk45z(1.234, -0.123, 1984)
+In [5]: slalib.sla_fk45z(1.234, -0.123, 1984)
 Out[5]: (1.2446165107316911, -0.12141858395865548)
 
-In [6]: S.sla_dafin("-00 03 34.6", 1)
+In [6]: slalib.sla_dafin("-00 03 34.6", 1)
 Out[6]: (12, -0.0010404101596610642, 0)
 
-In [7]: S.sla_obs(0, "GBT")
+In [7]: slalib.sla_obs(0, "GBT")
 Out[7]:
 ('GBT',
  'Green Bank Telescope                    ',
  1.3934679949996727,
  0.67078450520692623,
  880.0)
+
+If you import "sladoc" you can print the original Fortran doc
+strings using something like:
+
+In [1]: from pyslalib import slalib, sladoc
+
+In [2]: print sladoc['sla_caldj']
+"""
+*     - - - - - -
+*      C A L D J
+*     - - - - - -
+*
+*  Gregorian Calendar to Modified Julian Date
+*
+*  (Includes century default feature:  use sla_CLDJ for years
+*   before 100AD.)
+*
+*  Given:
+*     IY,IM,ID     int    year, month, day in Gregorian calendar
+*
+...
+
+Thanks go to Prasanth for adding the docstring capabilities!
 
 If you would like to build a shared library for linking with other
 programs, a simple Makefile is also included that should work with
