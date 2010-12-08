@@ -19,7 +19,7 @@ ext1 = Extension(name = 'pyslalib.slalib',
 if __name__ == "__main__":
     setup(name = 'pySLALIB',
           description       = "f2py and numpy based wrappers for SLALIB",
-          version           = "1.0.2dev",
+          version           = "1.0.2",
           author            = "Scott Ransom",
           author_email      = "sransom@nrao.edu",
           packages = ['pyslalib'],
