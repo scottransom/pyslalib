@@ -18,7 +18,7 @@ beginning of the SLALIB Fortran source file.
 """
 import pickle
 import os
-import slalib
+from .slalib import slalib
 
 # A dictionary with functions as keys and comments in SLALIB
 # Fortran files as value strings. Use 

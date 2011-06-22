@@ -23,7 +23,7 @@ def get_docstring():
      
     file_list = glob.glob('*.[fF]')
      
-    print "%d files found." % len(file_list)
+    print("%d files found." % len(file_list))
      
     for i,file_name in enumerate(file_list):
         f = open(file_name, "r")
@@ -33,9 +33,9 @@ def get_docstring():
             name_line = f.readline()
         matches = name_regex.search(name_line)
         if len(matches.groups()) != 1: # there should be only one match
-            raise ValueError, "More than one match for function name."
+            raise ValueError("More than one match for function name.")
         name = matches.group()
-        print "Reading %10s in %s." % (name, file_name)
+        print("Reading %10s in %s." % (name, file_name))
         
         doc = []
         inside = 0
@@ -55,7 +55,7 @@ def get_docstring():
      
         f.close()
         
-    print "%d functions read from %d files." % (len(doc_dict), len(file_list))
+    print("%d functions read from %d files." % (len(doc_dict), len(file_list)))
     return doc_dict
 
 if __name__ == "__main__":
