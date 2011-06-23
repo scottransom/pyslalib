@@ -18,10 +18,13 @@ beginning of the SLALIB Fortran source file.
 """
 import pickle
 import os
-from .slalib import slalib
+
+# Relative path: from .slalib import *
+# works for 2.6 and above but we use this form to work on 2.5
+from pyslalib import slalib
 
 # A dictionary with functions as keys and comments in SLALIB
 # Fortran files as value strings. Use 
 dir_name = os.path.dirname(slalib.__file__)
-f = open(os.path.join(dir_name,"docstring_pickle.pkl"), "r")
+f = open(os.path.join(dir_name,"docstring_pickle.pkl"), "rb")
 sladoc = pickle.load(f)
