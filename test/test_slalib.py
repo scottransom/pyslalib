@@ -1,4 +1,4 @@
-import slalib as S
+from pyslalib import slalib as S
 import numpy as N
 import numpy.testing as T
 import math, unittest
