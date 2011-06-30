@@ -6,7 +6,7 @@ import get_docstring
 
 # Generate documentation dictionary and save it in "lib/"
 docstring = get_docstring.get_docstring()
-f = open("lib/docstring_pickle.pkl", "w")
+f = open("lib/docstring_pickle.pkl", "wb")
 pickle.dump(docstring, f)
 f.close()
 
