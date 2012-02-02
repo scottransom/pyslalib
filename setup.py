@@ -1,4 +1,4 @@
-1;2802;0c#!/usr/bin/env python
+#!/usr/bin/env python
 import glob
 from numpy.distutils.core import setup, Extension
 import pickle
