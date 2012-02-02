@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+1;2802;0c#!/usr/bin/env python
 import glob
 from numpy.distutils.core import setup, Extension
 import pickle
@@ -19,7 +19,7 @@ ext1 = Extension(name = 'pyslalib.slalib',
 if __name__ == "__main__":
     setup(name = 'pySLALIB',
           description       = "f2py and numpy based wrappers for SLALIB",
-          version           = "1.0.2",
+          version           = "1.0.3",
           author            = "Scott Ransom",
           author_email      = "sransom@nrao.edu",
           packages = ['pyslalib'],
