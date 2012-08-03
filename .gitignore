@@ -6,3 +6,6 @@ TAGS
 *egg-info
 build/
 docstring_pickle.pkl
+MANIFEST
+deb_dist
+dist
