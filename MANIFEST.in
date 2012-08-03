@@ -1,0 +1,3 @@
+include get_docstring.py README.txt stdeb.cfg
+include *.h *.c
+
