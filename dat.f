@@ -39,11 +39,11 @@
 *     :     occasion that a leap second is      :
 *     :                announced                :
 *     :                                         :
-*     :  Latest leap second:  2009 January 1    :
+*     :  Latest leap second:  2015 July 1       :
 *     :                                         :
 *     :-----------------------------------------:
 *
-*  Last revision:   11 July 2005
+*  Last revision:   31 January 2015
 *
 *  Copyright P.T.Wallace.  All rights reserved.
 *
@@ -80,6 +80,10 @@
 *  leap second is announced, and update the   *
 *  preamble comments appropriately.           *
 * - - - - - - - - - - - - - - - - - - - - - - *
+
+*     2015 July 1
+      ELSE IF (UTC.GE.57204D0) THEN
+         DT=36D0
 
 *     2012 July 1
       ELSE IF (UTC.GE.56109D0) THEN
