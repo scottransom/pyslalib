@@ -39,11 +39,11 @@
 *     :     occasion that a leap second is      :
 *     :                announced                :
 *     :                                         :
-*     :  Latest leap second:  2015 July 1       :
+*     :  Latest leap second:  2016 December 31  :
 *     :                                         :
 *     :-----------------------------------------:
 *
-*  Last revision:   31 January 2015
+*  Last revision:   03 October 2016
 *
 *  Copyright P.T.Wallace.  All rights reserved.
 *
@@ -59,8 +59,8 @@
 *    GNU General Public License for more details.
 *
 *    You should have received a copy of the GNU General Public License
-*    along with this program (see SLA_CONDITIONS); if not, write to the 
-*    Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
+*    along with this program (see SLA_CONDITIONS); if not, write to the
+*    Free Software Foundation, Inc., 59 Temple Place, Suite 330,
 *    Boston, MA  02111-1307  USA
 *
 *-
@@ -80,6 +80,10 @@
 *  leap second is announced, and update the   *
 *  preamble comments appropriately.           *
 * - - - - - - - - - - - - - - - - - - - - - - *
+
+*     2017 January 1
+      ELSE IF (UTC.GE.57754D0) THEN
+         DT=37D0
 
 *     2015 July 1
       ELSE IF (UTC.GE.57204D0) THEN
