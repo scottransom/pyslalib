@@ -348,7 +348,7 @@ class TestSLALIBFunctions(unittest.TestCase):
                         [1.6578,   1.380522,   1.22548578],
                         [1.380522, 1.22548578, 1.1356276122]])
         dv = N.asarray([2.28625, 1.7128825, 1.429432225])
-        da, dv, dd, j, iw = S.sla_dmat(da, dv, N.empty(3.0))
+        da, dv, dd, j, iw = S.sla_dmat(da, dv, N.empty(3))
         ans = N.asarray([[18.02550629769198, -52.16386644917280607, 34.37875949717850495],
                          [-52.16386644917280607, 168.1778099099805627, -118.0722869694232670],
                          [34.37875949717850495, -118.0722869694232670, 86.50307003740151262]])
@@ -923,7 +923,7 @@ class TestSLALIBFunctions(unittest.TestCase):
         T.assert_almost_equal(pv[5], 3.709878268217564005e-8, 19, 'sla_planel, pv(6)')
         T.assert_equal(j, 0, 'sla_planel, j')
         pv, j = S.sla_planet(1e6, 0)
-        T.assert_array_almost_equal(pv, N.zeros(6.0), 15, 'sla_planet, pv 1')
+        T.assert_array_almost_equal(pv, N.zeros(6), 15, 'sla_planet, pv 1')
         T.assert_equal(j, -1, 'sla_planet, j 1')
         pv, j = S.sla_planet(1e6, 10)
         T.assert_equal(j, -1, 'sla_planet, j 2')
@@ -1194,7 +1194,7 @@ class TestSLALIBFunctions(unittest.TestCase):
                        [1.380522, 1.22548578, 1.1356276122]],
                       order='Fortran')
         v = N.asarray([2.28625, 1.7128825, 1.429432225])
-        a, v, d, j, iw = S.sla_smat(a, v, N.empty(3.0, dtype=N.float32))
+        a, v, d, j, iw = S.sla_smat(a, v, N.empty(3, dtype=N.float32))
         ans = N.asarray([[18.02550629769198, -52.16386644917280607, 34.37875949717850495],
                          [-52.16386644917280607, 168.1778099099805627, -118.0722869694232670],
                          [34.37875949717850495, -118.0722869694232670, 86.50307003740151262]],
