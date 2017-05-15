@@ -10,6 +10,20 @@ import math, unittest
 # Scott M. Ransom <sransom@nrao.edu>, 2007
 #
 
+# The Fortran code always returns byte strings.  Python 2 is happy with this,
+# as it is its default string representation.  Python 3 requires more care.
+
+# The strategy taken here is to force test values that we provide to be
+# bytestrings, so that they can be compared with the fortran output.
+
+# None of the numeric code is affected by Python 2 vs Python 3.
+
+def safe_str(obj):
+    """ return the byte string representation of obj """
+    if hasattr(obj, "encode"):
+        obj = obj.encode('unicode_escape')
+    return obj
+
 class TestSLALIBFunctions(unittest.TestCase):
 
     def testaddet(self):
@@ -216,13 +230,13 @@ class TestSLALIBFunctions(unittest.TestCase):
 
     def testcd2tf(self):
         s, ihmsf = S.sla_cd2tf(4, -0.987654321)
-        T.assert_equal(s, '-', 'sla_cd2tf, s')
+        T.assert_equal(s, safe_str('-'), 'sla_cd2tf, s')
         T.assert_equal(ihmsf[0], 23, 'sla_cd2tf, (1)')
         T.assert_equal(ihmsf[1], 42, 'sla_cd2tf, (2)')
         T.assert_equal(ihmsf[2], 13, 'sla_cd2tf, (3)')
         T.assert_almost_equal(ihmsf[3], 3333, -3, 'sla_cd2tf, (4)')
         s, ihmsf = S.sla_dd2tf(4, -0.987654321)
-        T.assert_equal(s, '-', 'sla_dd2tf, s')
+        T.assert_equal(s, safe_str('-'), 'sla_dd2tf, s')
         T.assert_equal(ihmsf[0], 23, 'sla_dd2tf, (1)')
         T.assert_equal(ihmsf[1], 42, 'sla_dd2tf, (2)')
         T.assert_equal(ihmsf[2], 13, 'sla_dd2tf, (3)')
@@ -235,13 +249,13 @@ class TestSLALIBFunctions(unittest.TestCase):
 
     def testcr2af(self):
         s, idmsf = S.sla_cr2af(4, 2.345)
-        T.assert_equal(s, '+', 'sla_cr2af, s')
+        T.assert_equal(s, safe_str('+'), 'sla_cr2af, s')
         T.assert_equal(idmsf[0], 134, 'sla_cr2af, (1)')
         T.assert_equal(idmsf[1], 21, 'sla_cr2af, (2)')
         T.assert_equal(idmsf[2], 30, 'sla_cr2af, (3)')
         T.assert_almost_equal(idmsf[3], 9706, -3, 'sla_cr2af, (4)')
         s, idmsf = S.sla_dr2af(4, 2.345)
-        T.assert_equal(s, '+', 'sla_dr2af, s')
+        T.assert_equal(s, safe_str('+'), 'sla_dr2af, s')
         T.assert_equal(idmsf[0], 134, 'sla_dr2af, (1)')
         T.assert_equal(idmsf[1], 21, 'sla_dr2af, (2)')
         T.assert_equal(idmsf[2], 30, 'sla_dr2af, (3)')
@@ -249,13 +263,13 @@ class TestSLALIBFunctions(unittest.TestCase):
 
     def testcr2tf(self):
         s, ihmsf = S.sla_cr2tf(4, -3.01234)
-        T.assert_equal(s, '-', 'sla_cr2tf, s')
+        T.assert_equal(s, safe_str('-'), 'sla_cr2tf, s')
         T.assert_equal(ihmsf[0], 11, 'sla_cr2tf, (1)')
         T.assert_equal(ihmsf[1], 30, 'sla_cr2tf, (2)')
         T.assert_equal(ihmsf[2], 22, 'sla_cr2tf, (3)')
         T.assert_almost_equal(ihmsf[3], 6484, -3, 'sla_cr2tf, (4)')
         s, ihmsf = S.sla_dr2tf(4, -3.01234)
-        T.assert_equal(s, '-', 'sla_dr2tf, s')
+        T.assert_equal(s, safe_str('-'), 'sla_dr2tf, s')
         T.assert_equal(ihmsf[0], 11, 'sla_dr2tf, (1)')
         T.assert_equal(ihmsf[1], 30, 'sla_dr2tf, (2)')
         T.assert_equal(ihmsf[2], 22, 'sla_dr2tf, (3)')
@@ -718,32 +732,32 @@ class TestSLALIBFunctions(unittest.TestCase):
         T.assert_equal(j, 2, 'sla_intin, j5')
 
     def testkbj(self):
-        k = '?'
+        k = safe_str('?')
         e = 1950
         k, j = S.sla_kbj(-1, e)
-        T.assert_equal(k, ' ', 'sla_kbj, jb1')
+        T.assert_equal(k, safe_str(' '), 'sla_kbj, jb1')
         T.assert_equal(j, 1, 'sla_kbj, j1')
         k, j = S.sla_kbj(0, e)
-        T.assert_equal(k, 'B', 'sla_kbj, jb2')
+        T.assert_equal(k, safe_str('B'), 'sla_kbj, jb2')
         T.assert_equal(j, 0, 'sla_kbj, j2')
         k, j = S.sla_kbj(1, e)
-        T.assert_equal(k, 'B', 'sla_kbj, jb3')
+        T.assert_equal(k, safe_str('B'), 'sla_kbj, jb3')
         T.assert_equal(j, 0, 'sla_kbj, j3')
         k, j = S.sla_kbj(2, e)
-        T.assert_equal(k, 'J', 'sla_kbj, jb4')
+        T.assert_equal(k, safe_str('J'), 'sla_kbj, jb4')
         T.assert_equal(j, 0, 'sla_kbj, j4')
         k, j = S.sla_kbj(3, e)
-        T.assert_equal(k, ' ', 'sla_kbj, jb5')
+        T.assert_equal(k, safe_str(' '), 'sla_kbj, jb5')
         T.assert_equal(j, 1, 'sla_kbj, j5')
         e = 2000
         k, j = S.sla_kbj(0, e)
-        T.assert_equal(k, 'J', 'sla_kbj, jb6')
+        T.assert_equal(k, safe_str('J'), 'sla_kbj, jb6')
         T.assert_equal(j, 0, 'sla_kbj, j6')
         k, j = S.sla_kbj(1, e)
-        T.assert_equal(k, 'B', 'sla_kbj, jb7')
+        T.assert_equal(k, safe_str('B'), 'sla_kbj, jb7')
         T.assert_equal(j, 0, 'sla_kbj, j7')
         k, j = S.sla_kbj(2, e)
-        T.assert_equal(k, 'J', 'sla_kbj, jb8')
+        T.assert_equal(k, safe_str('J'), 'sla_kbj, jb8')
         T.assert_equal(j, 0, 'sla_kbj, j8')
 
     def testmap(self):
@@ -806,33 +820,33 @@ class TestSLALIBFunctions(unittest.TestCase):
 
     def testobs(self):
         n = 0
-        c = 'MMT'
+        c = safe_str('MMT')
         c, name, w, p, h = S.sla_obs(n, c)
-        T.assert_equal(c.strip(), 'MMT', 'sla_obs, 1/c')
-        T.assert_equal(name.strip(), 'MMT 6.5m, Mt Hopkins', 'sla_obs, 1/name')
+        T.assert_equal(c.strip(), safe_str('MMT'), 'sla_obs, 1/c')
+        T.assert_equal(name.strip(), safe_str('MMT 6.5m, Mt Hopkins'), 'sla_obs, 1/name')
         T.assert_almost_equal(w, 1.935300584055477, 8, 'sla_obs, 1/w')
         T.assert_almost_equal(p, 0.5530735081550342238, 10, 'sla_obs, 1/p')
         T.assert_almost_equal(h, 2608, 10, 'sla_obs, 1/h')
         n = 61
         c = 20*' '
         c, name, w, p, h = S.sla_obs(n, c)
-        T.assert_equal(c.strip(), 'KECK1', 'sla_obs, 2/c')
-        T.assert_equal(name.strip(), 'Keck 10m Telescope #1', 'sla_obs, 2/name')
+        T.assert_equal(c.strip(), safe_str('KECK1'), 'sla_obs, 2/c')
+        T.assert_equal(name.strip(), safe_str('Keck 10m Telescope #1'), 'sla_obs, 2/name')
         T.assert_almost_equal(w, 2.713545757918895, 8, 'sla_obs, 2/w')
         T.assert_almost_equal(p, 0.3460280563536619, 8, 'sla_obs, 2/p')
         T.assert_almost_equal(h, 4160, 10, 'sla_obs, 2/h')
         n = 83
         c = 20*' '
         c, name, w, p, h = S.sla_obs(n, c)
-        T.assert_equal(c.strip(), 'MAGELLAN2', 'sla_obs, 3/c')
-        T.assert_equal(name.strip(), 'Magellan 2, 6.5m, Las Campanas', 'sla_obs, 3/name')
+        T.assert_equal(c.strip(), safe_str('MAGELLAN2'), 'sla_obs, 3/c')
+        T.assert_equal(name.strip(), safe_str('Magellan 2, 6.5m, Las Campanas'), 'sla_obs, 3/name')
         T.assert_almost_equal(w, 1.233819305534497, 8, 'sla_obs, 3/w')
         T.assert_almost_equal(p, -0.506389344359954, 8, 'sla_obs, 3/p')
         T.assert_almost_equal(h, 2408, 10, 'sla_obs, 3/h')
         n = 84
         c = 20*' '
         c, name, w, p, h = S.sla_obs(n, c)
-        T.assert_equal(name.strip(), '?', 'sla_obs, 4/name')
+        T.assert_equal(name.strip(), safe_str('?'), 'sla_obs, 4/name')
 
     def testpa(self):
         T.assert_almost_equal(S.sla_pa(-1.567, 1.5123, 0.987),
