@@ -9,22 +9,28 @@ set of unit tests are available in the test/ directory of the source
 distribution.  The only external dependency is numpy.
 
 The module ``pyslalib.slalib`` contains the f2py wrapped
-functions. The dictionary, ``pyslalib.sladoc`` contains documentation
-for functions; accessed by using the function name as key. For
-example: ``pyslalib.sladoc['sla_dat']`` will return a string
+functions. Call of ``help("sla_dat")`` will return a string
 containing the documentation for the ``sla_dat`` function. The
 documentation for each function is generated from the comment at the
 beginning of the SLALIB Fortran source file.
 """
-import pickle
 import os
+from . import slalib as sla
+import json
 
-# Relative path: from .slalib import *
-# works for 2.6 and above but we use this form to work on 2.5
-from pyslalib import slalib
 
-# A dictionary with functions as keys and comments in SLALIB
-# Fortran files as value strings. Use 
-dir_name = os.path.dirname(slalib.__file__)
-f = open(os.path.join(dir_name,"docstring_pickle.pkl"), "rb")
-sladoc = pickle.load(f)
+PACKAGE_DIR = os.path.dirname(__file__)
+with open(os.path.join(PACKAGE_DIR, "docstrings.json"), "r") as f:
+    docstrings_map = json.load(f)
+
+
+__all__ = []
+
+
+# Add docstrings and strip sla_ prefix from function names
+for obj_name, obj in sla.__dict__.items():
+    if hasattr(obj, "__call__"):
+        obj.__doc__ = docstrings_map.get(obj_name, getattr(obj, "__doc__", ""))
+        globals()[obj_name] = obj
+        __all__.append(obj_name)
+

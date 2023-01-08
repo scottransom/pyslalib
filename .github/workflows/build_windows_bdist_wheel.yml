@@ -1,0 +1,74 @@
+name: Windows Binary Wheel
+
+on:
+  push:
+    branches:
+      - master
+      - maintenance/**
+  pull_request:
+    branches:
+      - master
+      - maintenance/**
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+
+
+    env:
+      WHEEL_DIR: "wheels/windows/${{ matrix.python-version }}"
+    steps:
+    - uses: actions/checkout@v3
+    - name: Update MinGW-64
+      uses: crazy-max/ghaction-chocolatey@v2
+      with:
+        args: upgrade mingw -y --accept-license
+    - name: Set the PATH variable
+      run: echo "C:\ProgramData\chocolatey\lib\mingw\tools\install\mingw64\bin;" >> $env:GITHUB_PATH
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4.4.0
+      with:
+        python-version: "3.10"
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Build pySLALIB
+      run: |
+        mkdir -p $env:WHEEL_DIR
+        python -m build -w -n -o $env:WHEEL_DIR
+    - name: Test package
+      run: |
+        ls $env:WHEEL_DIR | ForEach-Object {pip install --verbose --no-build-isolation $_}
+        python test/test_slalib.py
+    
+    # Need only at last steps to correctly name artifacts and releases
+    - name: Check version of the package
+      id: check_version
+      # tomli installed with `build` package
+      run: |
+        touch get-version.py
+        echo "import tomli; f=open('pyproject.toml', 'rb'); cfg=tomli.load(f); print(cfg['project']['version']);" >> get-version.py
+        echo "RELEASE_VERSION<<EOF" >> $env:GITHUB_ENV
+        python get-version.py >> $env:GITHUB_ENV
+        echo "EOF" >> $env:GITHUB_ENV
+      
+    - uses: actions/upload-artifact@v3
+      with:
+        name: "pySLALIB v${{  env.RELEASE_VERSION }} for Python-${{ matrix.python-version }} (Windows X86-64)"
+        path: "${{env.WHEEL_DIR}}/*.whl"
+        
+    - uses: ncipollo/release-action@v1
+      with:
+        allowUpdates: true
+        artifacts: "${{env.WHEEL_DIR}}/*.whl"
+        tag: "pyslalib-${{  env.RELEASE_VERSION }}-py-${{ matrix.python-version }}-windows-x86-64"
+        replacesArtifacts: true
+        omitNameDuringUpdate: true
+        name: "Release pySLALIB v${{  env.RELEASE_VERSION }} for Python-${{ matrix.python-version }} (Windows X86-64)"

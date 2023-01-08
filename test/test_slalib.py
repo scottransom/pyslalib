@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 
-from pyslalib import slalib as S
+import pyslalib as S
 import numpy as N
 import numpy.testing as T
 import math, unittest
@@ -723,7 +723,7 @@ class TestSLALIBFunctions(unittest.TestCase):
         k = '?'
         e = 1950
         k, j = S.sla_kbj(-1, e)
-        T.assert_equal(k, b' ', 'sla_kbj, jb1')
+        T.assert_equal(k, b'', 'sla_kbj, jb1')
         T.assert_equal(j, 1, 'sla_kbj, j1')
         k, j = S.sla_kbj(0, e)
         T.assert_equal(k, b'B', 'sla_kbj, jb2')
@@ -735,7 +735,7 @@ class TestSLALIBFunctions(unittest.TestCase):
         T.assert_equal(k, b'J', 'sla_kbj, jb4')
         T.assert_equal(j, 0, 'sla_kbj, j4')
         k, j = S.sla_kbj(3, e)
-        T.assert_equal(k, b' ', 'sla_kbj, jb5')
+        T.assert_equal(k, b'', 'sla_kbj, jb5')
         T.assert_equal(j, 1, 'sla_kbj, j5')
         e = 2000
         k, j = S.sla_kbj(0, e)

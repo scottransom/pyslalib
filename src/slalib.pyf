@@ -1376,9 +1376,6 @@ python module slalib ! in
             real dimension(3) :: vb
             real dimension(3),intent(out) ::  vc
         end subroutine sla_vxv
-        subroutine sla_wait(delay) ! in :slalib:wait.f
-            real :: delay
-        end subroutine sla_wait
         subroutine sla_xy2xy(x1,y1,coeffs,x2,y2) ! in :slalib:xy2xy.f
             double precision :: x1
             double precision :: y1

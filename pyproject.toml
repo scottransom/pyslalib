@@ -1,0 +1,48 @@
+[build-system]
+requires = [
+    "build",
+    "ninja>=1.8.2",
+    "meson-python>=0.8.0",
+    "wheel",
+    "numpy>=1.19",
+]
+build-backend = "mesonpy"
+
+[project]
+name = "pyslalib"
+description = "f2py and numpy based wrappers for SLALIB"
+version = "1.1.0"
+# dynamic = ["version"]
+classifiers = [
+    "Programming Language :: C",
+    "Programming Language :: Fortran",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: Scientific/Engineering :: Astronomy"]
+requires-python = ">=3.8,<3.12"
+authors = [
+  { name= "Scott Ransom", email = "sransom@nrao.edu" },
+  { name= "Nicolai Pankov", email = "nspankov@edu.hse.ru" }]
+dependencies = [
+    "numpy>=1.19",
+    ]
+
+[project.optional-dependencies]
+develop = ["pytest >= 2.1",
+           "black",
+           "sphinx",
+           "meson-python @ git+https://github.com/mesonbuild/meson-python.git@editable-wheels",
+           "setuptools_scm",
+           "twine"]
+tests = ["pytest >= 2.1",]
+docs = ["myst_parser",
+        "sphinx",
+        "sphinx >= 4.4",
+        "sphinxcontrib-napoleon",
+        "sphinx-rtd-theme > 0.3"]

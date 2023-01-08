@@ -9,3 +9,7 @@ docstring_pickle.pkl
 MANIFEST
 deb_dist
 dist
+builddir
+.mesonpy-native-file.ini
+.vscode
+__pycache__

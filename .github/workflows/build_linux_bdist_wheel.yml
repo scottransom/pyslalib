@@ -1,0 +1,66 @@
+name: Linux Binary Wheel
+
+on:
+  push:
+    branches:
+      - master
+      - maintenance/**
+  pull_request:
+    branches:
+      - master
+      - maintenance/**
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install GCC toolkit
+      run: |
+        sudo apt install build-essential gfortran
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4.4.0
+      with:
+        python-version: "3.10"
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install "patchelf>=0.11.0"
+        pip install -r requirements.txt
+    - name: Build pySLALIB
+      run: |
+        mkdir -p wheels/linux/${{ matrix.python-version }}
+        python -m build -w -o wheels/linux/${{ matrix.python-version }}
+    - name: Test package
+      run: |
+        pip install --verbose wheels/linux/${{ matrix.python-version }}/*.whl
+        python test/test_slalib.py
+    - name: Check version of the package
+      id: check_version
+      # tomli installed with `build` package
+      run: |
+        touch get-version.py
+        echo "import tomli; f=open('pyproject.toml', 'rb'); cfg=tomli.load(f); print(cfg['project']['version']);" >> get-version.py
+        echo "RELEASE_VERSION<<EOF" >> $GITHUB_ENV
+        python get-version.py >> $GITHUB_ENV
+        echo "EOF" >> $GITHUB_ENV
+    - uses: actions/upload-artifact@v3
+      with:
+        name: "pySLALIB ${{ env.RELEASE_VERSION }} for Python v${{ matrix.python-version }} (Linux-64)"
+        path: wheels/linux/${{ matrix.python-version }}/*.whl
+        
+    - uses: ncipollo/release-action@v1
+      with:
+        allowUpdates: true
+        artifacts: "wheels/linux/${{ matrix.python-version }}/*.whl"
+        tag: "pyslalib-${{ env.RELEASE_VERSION }}-py-${{ matrix.python-version }}-linux-64"
+        replacesArtifacts: true
+        omitNameDuringUpdate: true
+        name: "Release pySLALIB v${{ env.RELEASE_VERSION }} for Python-${{ matrix.python-version }} (Linux-64)"
